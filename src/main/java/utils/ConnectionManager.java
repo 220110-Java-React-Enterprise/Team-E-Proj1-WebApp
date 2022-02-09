@@ -1,0 +1,39 @@
+package utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class ConnectionManager {
+    private static Connection conn;
+    private static boolean databaseStartedUp = false;
+    public static void setUpConnection() {
+        try {
+            if (!databaseStartedUp) {
+                Properties props = new Properties();
+                ClassLoader loader = Thread.currentThread().getContextClassLoader();
+                InputStream input = loader.getResourceAsStream("jdbc.properties");
+                props.load(input);
+                String connectionString = "jdbc:mariadb://" +
+                        props.getProperty("hostname") + ":" +
+                        props.getProperty("port") + "/" +
+                        props.getProperty("dbname") + "?user=" +
+                        props.getProperty("username") + "&password=" +
+                        props.getProperty("password");
+                conn = DriverManager.getConnection(connectionString);
+                databaseStartedUp = true;
+            }
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static Connection getConnection() {
+        if (!databaseStartedUp) {
+            setUpConnection();
+        }
+        return conn;
+    }
+}
