@@ -7,11 +7,14 @@ public class Users {
     private String fName;
     private String lName;
 
-    public Users(String tablename, int userID, String username, String FName, String lname) {
+
+    public Users(){};
+
+    public Users(String tablename, int userID, String username, String fName, String lname) {
         this.tableName = tablename;
         this.users_id = userID;
         this.username = username;
-        this.fName = FName;
+        this.fName = fName;
         this.lName = lname;
 
     }
@@ -44,15 +47,15 @@ public class Users {
         return fName;
     }
 
-    public void setFName(String FName) {
-        this.fName = FName;
+    public void setFName(String fName) {
+        this.fName = fName;
     }
 
     public String getLName() {
         return lName;
     }
 
-    public void setLName(String lname) {
-        this.lName = lname;
+    public void setLName(String lName) {
+        this.lName = lName;
     }
 }

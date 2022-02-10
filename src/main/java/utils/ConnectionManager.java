@@ -9,31 +9,32 @@ import java.util.Properties;
 
 public class ConnectionManager {
     private static Connection conn;
+    private static String connectionStr;
     private static boolean databaseStartedUp = false;
     public static void setUpConnection() {
         try {
-            if (!databaseStartedUp) {
-                Properties props = new Properties();
-                ClassLoader loader = Thread.currentThread().getContextClassLoader();
-                InputStream input = loader.getResourceAsStream("jdbc.properties");
-                props.load(input);
-                String connectionString = "jdbc:mariadb://" +
-                        props.getProperty("hostname") + ":" +
-                        props.getProperty("port") + "/" +
-                        props.getProperty("dbname") + "?user=" +
-                        props.getProperty("username") + "&password=" +
-                        props.getProperty("password");
-                conn = DriverManager.getConnection(connectionString);
-                databaseStartedUp = true;
-            }
-        } catch (IOException | SQLException e) {
+            Properties props = new Properties();
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream input = loader.getResourceAsStream("jdbc.properties");
+            props.load(input);
+            String connectionString = "jdbc:mariadb://" +
+                    props.getProperty("hostname") + ":" +
+                    props.getProperty("port") + "/" +
+                    props.getProperty("dbname") + "?user=" +
+                    props.getProperty("username") + "&password=" +
+                    props.getProperty("password");
+            Class.forName("org.mariadb.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionString);
+            databaseStartedUp = true;
+            connectionStr = connectionString;
+        } catch (IOException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-    public static Connection getConnection() {
+    public static String getConnection() {
         if (!databaseStartedUp) {
             setUpConnection();
         }
-        return conn;
+        return connectionStr;
     }
 }

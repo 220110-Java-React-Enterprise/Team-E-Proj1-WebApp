@@ -23,6 +23,38 @@
         <servlet-name>pingServlet</servlet-name>
         <url-pattern>/ping</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>updateServlet</servlet-name>
+        <servlet-class>servlets.MailManServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateServlet</servlet-name>
+        <url-pattern>/update/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>deleteServlet</servlet-name>
+        <servlet-class>servlets.MailManServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteServlet</servlet-name>
+        <url-pattern>/delete/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>createServlet</servlet-name>
+        <servlet-class>servlets.MailManServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createServlet</servlet-name>
+        <url-pattern>/create/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>printServlet</servlet-name>
+        <servlet-class>servlets.MailManServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>printServlet</servlet-name>
+        <url-pattern>/display/*</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>dataServlet</servlet-name>

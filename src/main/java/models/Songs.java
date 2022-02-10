@@ -5,12 +5,16 @@ public class Songs {
     private int songs_id;
     private String songName;
     private String songArtist;
+    private int userID;
 
-    public Songs(String tableName, int songs_id, String songName, String songArtist) {
+    public Songs(){};
+
+    public Songs(String tableName, int songs_id, String songName, String songArtist, int userID) {
         this.tableName = tableName;
         this.songs_id = songs_id;
         this.songName = songName;
         this.songArtist = songArtist;
+        this.userID = userID;
     }
 
     public String getTableName() {
@@ -43,5 +47,12 @@ public class Songs {
 
     public void setSongArtist(String songArtist) {
         this.songArtist = songArtist;
+    }
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }
