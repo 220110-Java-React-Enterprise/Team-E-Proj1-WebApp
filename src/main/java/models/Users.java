@@ -1,7 +1,7 @@
 package models;
 
 public class Users {
-    private  String tableName;
+    private  String tableName = "users";
     private int users_id = 0;
     private String username;
     private String fName;
@@ -11,7 +11,7 @@ public class Users {
     public Users(){};
 
     public Users(String tablename, int userID, String username, String fName, String lname) {
-        this.tableName = tablename;
+        this.tableName = "users";
         this.users_id = userID;
         this.username = username;
         this.fName = fName;

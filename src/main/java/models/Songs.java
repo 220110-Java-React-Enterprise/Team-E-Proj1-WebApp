@@ -1,7 +1,7 @@
 package models;
 
 public class Songs {
-    private String tableName;
+    private String tableName = "songs";
     private int songs_id;
     private String songName;
     private String songArtist;
@@ -10,7 +10,7 @@ public class Songs {
     public Songs(){};
 
     public Songs(String tableName, int songs_id, String songName, String songArtist, int userID) {
-        this.tableName = tableName;
+        this.tableName = "songs";
         this.songs_id = songs_id;
         this.songName = songName;
         this.songArtist = songArtist;

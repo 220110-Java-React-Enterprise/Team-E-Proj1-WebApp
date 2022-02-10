@@ -17,37 +17,46 @@ import java.io.IOException;
 public class MailManServlet extends HttpServlet {
     String connectionStr;
 
-//    public void init(){
-//        try {
-//            String connectionStr = ConnectionManager.getConnection();
-//        } catch(IOException e) {
-//            FileLogger.getFileLogger().log(e);
-//        }
-//    }
-
+    //prints out the table of the object placed in or, a specific row if given
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         connectionStr = ConnectionManager.getConnection(); // this is establishing a connection to database
         // for use by ORM
         try {
             String string = req.getRequestURI();
+
+            //gets the last string after the / in the URI
             String[] options = string.split("/");
             String option = options[options.length - 1];
+
+            //checks if there is a query string
             if (req.getQueryString() != null) {
+
+                //if uri contained users
                 if (option.contains("users")) {
                     ObjectMapper mapper = new ObjectMapper();
                     Users user = mapper.readValue(req.getInputStream(), Users.class);
                     UsersHelper usersHelper = new UsersHelper(connectionStr);
+
+                    //prints user table where id equals id given in the query string
                     usersHelper.printTable(user, resp, req.getQueryString());
 
                     resp.setStatus(203);
+
+                    //if the user has songs in uri
                 } else if (option.contains("songs")) {
                     ObjectMapper mapper = new ObjectMapper();
                     Songs song = mapper.readValue(req.getInputStream(), Songs.class);
                     SongsHelper songsHelper = new SongsHelper(connectionStr);
+
+                    //prints user table where id equals id given in the query string
                     songsHelper.printTable(song, resp, req.getQueryString());
                     resp.setStatus(200);
                 }
+
+                //if they didn't enter a query string
             } else {
+
+                //prints entire users table
                 if (option.equals("users")) {
                     ObjectMapper mapper = new ObjectMapper();
                     Users user = mapper.readValue(req.getInputStream(), Users.class);
@@ -55,6 +64,8 @@ public class MailManServlet extends HttpServlet {
                     usersHelper.printTable(user, resp);
 
                     resp.setStatus(203);
+
+                    //prints entire songs table
                 } else if (option.equals("songs")) {
                     ObjectMapper mapper = new ObjectMapper();
                     Songs song = mapper.readValue(req.getInputStream(), Songs.class);
@@ -64,48 +75,27 @@ public class MailManServlet extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             FileLogger.getFileLogger().log(e);
             resp.setStatus(500);
         }
-//        try
-//        {
-//            String string = req.getRequestURI();
-//            String[] options = string.split("/");
-//            String option = options[options.length-1];
-//            if(option.equals("users")){
-//                List<Users> usersList = UsersHelper.readTable(new Users());
-//                ObjectMapper mapper = new ObjectMapper();
-//                String jsonString = mapper.writeValueAsString(usersList);
-//                resp.getWriter().print(jsonString);
-//                resp.setStatus(200);
-//            }
-//            else if(option.equals("songs")){
-//                List<Songs> songsList = SongsHelper.readTable(new Songs());
-//                ObjectMapper mapper = new ObjectMapper();
-//                String jsonString = mapper.writeValueAsString(songsList);
-//                resp.getWriter().print(jsonString);
-//                resp.setStatus(200);
-//            }
-//        }
-//        catch(Exception e)
-//        {
-//            FileLogger.getFileLogger().log(e);
-//            resp.setStatus(500);
-//        }
     }
 
-        /** doPost adds a row to the table
-
+    /** doPost adds a row to the table
      */
+
+    //inserts new row into table,unless id is given, then it updates existing row
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         connectionStr = ConnectionManager.getConnection(); // this is establishing a connection to database
-                                                            // for use by ORM
+        // for use by ORM
         try {
+
+            //gets last string after / in URI
             String string = req.getRequestURI();
             String[] options = string.split("/");
             String option = options[options.length-1];
+
+            //updates user table
             if(option.equals("users")){
                 ObjectMapper mapper = new ObjectMapper();
                 Users user = mapper.readValue(req.getInputStream(), Users.class);
@@ -113,6 +103,8 @@ public class MailManServlet extends HttpServlet {
                 usersHelper.updatesTable(user);
 
                 resp.setStatus(203);
+
+                //updates songs table
             } else if(option.equals("songs")){
                 ObjectMapper mapper = new ObjectMapper();
                 Songs song = mapper.readValue(req.getInputStream(), Songs.class);
@@ -121,19 +113,23 @@ public class MailManServlet extends HttpServlet {
                 resp.setStatus(200);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             FileLogger.getFileLogger().log(e);
             resp.setStatus(500);
         }
     }
 
+    //deletes specified row from table
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         connectionStr = ConnectionManager.getConnection();
         try {
+
+            //gets last string after / in uri
             String string = req.getRequestURI();
             String[] options = string.split("/");
             String option = options[options.length-1];
+
+            //deletes row from users table
             if(option.equals("users")){
                 ObjectMapper mapper = new ObjectMapper();
                 Users user = mapper.readValue(req.getInputStream(), Users.class);
@@ -141,6 +137,8 @@ public class MailManServlet extends HttpServlet {
                 usersHelper.deleteRow(user);
 
                 resp.setStatus(203);
+
+                //deletes row from songs table
             } else if(option.equals("songs")){
                 ObjectMapper mapper = new ObjectMapper();
                 Songs song = mapper.readValue(req.getInputStream(), Songs.class);
@@ -149,20 +147,24 @@ public class MailManServlet extends HttpServlet {
                 resp.setStatus(200);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             FileLogger.getFileLogger().log(e);
             resp.setStatus(500);
         }
     }
 
+    //creates a new table in the database
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         connectionStr = ConnectionManager.getConnection(); // this is establishing a connection to database
         // for use by ORM
         try {
+
+            //gets string after last / in uri
             String string = req.getRequestURI();
             String[] options = string.split("/");
             String option = options[options.length-1];
+
+            //creates users table
             if(option.equals("users")){
                 ObjectMapper mapper = new ObjectMapper();
                 Users user = mapper.readValue(req.getInputStream(), Users.class);
@@ -170,6 +172,8 @@ public class MailManServlet extends HttpServlet {
                 usersHelper.createTable(user);
 
                 resp.setStatus(203);
+
+                //creates songs table
             } else if(option.equals("songs")){
                 ObjectMapper mapper = new ObjectMapper();
                 Songs song = mapper.readValue(req.getInputStream(), Songs.class);
@@ -178,7 +182,6 @@ public class MailManServlet extends HttpServlet {
                 resp.setStatus(200);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             FileLogger.getFileLogger().log(e);
             resp.setStatus(500);
         }

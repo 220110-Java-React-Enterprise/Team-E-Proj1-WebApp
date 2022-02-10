@@ -6,10 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FileLogger {
-        //What do we need to set this up as a singleton?
-        //private constructor
-        //private static reference to singleton object
-        //public getter that creates or returns our singleton
+
         private static FileLogger fileLogger;
         private static String filePath;
         private static boolean consoleOutput;
@@ -17,14 +14,15 @@ public class FileLogger {
         private static Integer limitLoggerFailsMax = 10;
         private Integer limitLoggerFails;
 
-
+        //creates singleton
         private FileLogger() {
-            filePath = "logs/";
+            filePath = "real_proj1/logs/";
             consoleOutput = false;
             stackTraceSize = 10;
             limitLoggerFails = limitLoggerFailsMax;
         }
 
+        //returns the filelogger if exists, if not creates one
         public static FileLogger getFileLogger() {
             if (fileLogger == null) {
                 fileLogger = new FileLogger();
@@ -32,6 +30,7 @@ public class FileLogger {
             return fileLogger;
         }
 
+        //overloaded function that takes in a string that changes the path
         public static FileLogger getFileLogger(String path) {
             if (fileLogger == null) {
                 fileLogger = new FileLogger();
@@ -40,7 +39,7 @@ public class FileLogger {
             return fileLogger;
         }
 
-
+        //function that logs the exception
         public void log(Exception e) {
             StringBuilder sb = new StringBuilder();
             sb.append(fileLogger.getTimestamp())
@@ -52,6 +51,7 @@ public class FileLogger {
             fileLogger.writeToLog(sb.toString());
         }
 
+        //overloaded function that logs the string inserted
         public void log(String str) {
             StringBuilder sb = new StringBuilder();
             sb.append(fileLogger.getTimestamp())
@@ -61,15 +61,18 @@ public class FileLogger {
             fileLogger.writeToLog(sb.toString());
         }
 
+        //gets time stamp
         private String getTimestamp() {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd HH:mm:ss]");
             return formatter.format(LocalDateTime.now());
         }
 
+        //gets file name
         private String getFileName() {
             return filePath + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".log";
         }
 
+        //formats the file
         private String formatStackTrace(Exception e) {
             StackTraceElement[] stackTrace = e.getStackTrace();
             StringBuilder sb = new StringBuilder();
@@ -84,6 +87,7 @@ public class FileLogger {
             return sb.toString();
         }
 
+        //writes a string to a log
         private void writeToLog(String text) {
             String fileName = getFileName();
             try (Writer fileWriter = new FileWriter(fileName, true)) {
