@@ -35,7 +35,7 @@ Using Postman as the front-end interface, the ticket kiosk is remotely available
   5. All Exceptions are caught and logged to a file
 
 ## Bonus Features
-  1. ORM can build foreign key relations according o object references.
+  1. ORM can build foreign key relations according to object references.
   2. ORM can design schema on the fly
 
 ## User Stories
