@@ -1,6 +1,6 @@
-## Project 1: Custom ORM and Web Application
+## Project 1
 
-# **Project 1:**
+# **Custom ORM and Web Application**
 By: Trevor Hughes, Mark Young
 
 ## Description:
